@@ -61,7 +61,23 @@ app.post('/initiate-payment', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
+// 3. Check payment status
+app.get('/check-payment/:phone', async (req, res) => {
+  try {
+    const phone = req.params.phone;
+    const doc = await db.collection('payments').doc(phone).get();
+    
+    if (!doc.exists) {
+      return res.json({paid: false});
+    }
+    
+    const data = doc.data();
+    res.json({paid: data.paid, expiry: data.expiry});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({error: 'Server error'});
+  }
+});
 // 2. Callback
 app.post('/callback', async (req, res) => {
   const callback = req.body.Body?.stkCallback;
