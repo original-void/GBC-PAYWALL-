@@ -97,5 +97,16 @@ app.get('/check-payment/:phone', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+// Add this new route for quiz frontend to check payment status
+app.get('/check-status/:phone', async (req, res) => {
+  try {
+    const payment = await Payment.findOne({ phone: req.params.phone });
+    res.json({ paid: payment?.paid || false });
+  } catch (err) {
+    res.json({ paid: false });
+  }
+});
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
