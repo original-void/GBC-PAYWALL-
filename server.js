@@ -10,7 +10,7 @@ app.use(express.json());
 const serviceAccount = JSON.parse(process.env.FIREBASE_KEY);
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  projectId: "gbc-app-ade11"
+  projectId: "ultimate-figure-499910-g0"
 });
 const db = admin.firestore();
 
